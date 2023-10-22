@@ -279,8 +279,6 @@ function showProducts() {
     output += `#${products[i].id} - ${products[i].description} - ${formatPrice(products[i].price)} \n`;
   }
   return output;
-  /* Útfæra */
-  /* Hér ætti að nota `formatPrice` hjálparfall */
 }
 
 /**
@@ -295,10 +293,52 @@ function showProducts() {
  * „Fjöldi er ekki löglegur, lágmark 1 og hámark 99.“
  * Ef vara og fjöldi eru lögleg gildi er vöru bætt við körfu. Ef vara er nú þegar í körfu er fjöldi
  * uppfærður, annars er nýrri línu bætt við körfu.
- *
+ *  
  * @returns undefined
  */
 function addProductToCart() {
+  const idAsString = prompt('Auðkenni vöru')
+  if(!idAsString){
+    console.error('Auðkenni má ekki vera tómt.');
+    return;
+  }
+
+  const id = Number.parseInt(idAsString, 10);
+  if (!validateInteger(id, 1)) {
+    console.error('Auðkenni vöru er ekki löglegt, verður að vera heiltala stærri en 0.');
+    return;
+  }
+ if(!products.find((id) => id)){
+  console.error('Vara fannst ekki.');
+  return;
+ }
+
+ const quantityAsString = prompt('Hversu mikið?');
+ if(!quantityAsString){
+  console.error('fjöldi má ekki vera tómur');
+  return;
+ }
+ const quantity = Number.parseInt(quantityAsString, 10);
+ if(quantity < 1 || quantity > 99){
+  console.error('Fjöldi er ekki löglegur, lágmark 1 og hámark 99.');
+  return;
+ }
+
+ if(cart.lines.find((id)=> id)){
+  cart.lines[id - 1].quantity += quantity;
+ }
+ else{
+  const cartProduct = products[id-1];
+
+  /** @type {CartLine} */
+  const line = {
+    cartProduct,
+    quantity,
+
+  };
+  cart.lines.push(line);
+ }
+
   /* Útfæra */
 
   /* Hér ætti að nota `validateInteger` hjálparfall til að staðfesta gögn frá notanda */
@@ -319,6 +359,12 @@ function addProductToCart() {
  * @returns undefined
  */
 function showCart() {
+  if(cart.lines.length == 0){
+    console.log('Karfan er tóm');
+  }
+  else{
+    console.log(`${cartInfo(cart)}`);
+  }
   /* Útfæra */
 }
 
@@ -341,5 +387,18 @@ function showCart() {
  * @returns undefined
  */
 function checkout() {
-  /* Útfæra */
+  if(cart.lines.length == 0){
+    console.log('Karfan er tóm');
+  }
+  else{
+  const name = prompt('Nafn:');
+  if(!name){
+    console.error('Nafn má ekki vera tómt');
+  }
+  const address = prompt('Heimilisfang:');
+  if(!address){
+    console.error('heimilisfang má ekki vera tómt');
+  }
+  console.log(`Pöntun móttekin ${name} \nVörur verða sendar á ${address} \n\n ${cartInfo(cart)}`);
+}
 }
