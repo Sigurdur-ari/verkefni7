@@ -125,7 +125,8 @@ const cart = {
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
  */
 function formatPrice(price) {
-  return price.toString();
+  const newPrice = new Intl.NumberFormat('is-IS', {style: 'currency', currency: 'ISK'}).format(price);
+  return newPrice.toString();
 }
 
 /**
