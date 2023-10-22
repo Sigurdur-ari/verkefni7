@@ -182,7 +182,7 @@ function cartInfo(cart) {
         total += cart.lines[i].product.price;
       }
   }
-  return `Samtals: ${total}`;
+  return `${output} Samtals: ${total}`;
 }
 
 // --------------------------------------------------------
@@ -274,6 +274,11 @@ function addProduct() {
  * @returns undefined
  */
 function showProducts() {
+  let output = '';
+  for (let i = 0; i < products.length; i++){
+    output += `#${products[i].id} - ${products[i].description} - ${formatPrice(products[i].price)} \n`;
+  }
+  return output;
   /* Útfæra */
   /* Hér ætti að nota `formatPrice` hjálparfall */
 }
