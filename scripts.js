@@ -171,7 +171,18 @@ function formatProduct(product, quantity = undefined) {
  * @returns Streng sem inniheldur upplýsingar um körfu.
  */
 function cartInfo(cart) {
-  /* Útfæra */
+  let output = '';
+  let total = 0;
+  for (let i = 0; i < cart.lines.length; i++){
+      output += `${formatProduct(cart.lines[i].product, cart.lines[i].product.price)} \n`; 
+      if (cart.lines[i].quantity > 1){
+        total += cart.lines[i].quantity * cart.lines[i].product.price;
+      }
+      else {
+        total += cart.lines[i].product.price;
+      }
+  }
+  return `Samtals: ${total}`;
 }
 
 // --------------------------------------------------------
