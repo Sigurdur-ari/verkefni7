@@ -125,8 +125,8 @@ const cart = {
  * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl
  */
 function formatPrice(price) {
-  const newPrice = new Intl.NumberFormat('is-IS', {style: 'currency', currency: 'ISK'}).format(price);
-  return newPrice.toString();
+  const newPrice = new Intl.NumberFormat('is-IS', {style: 'decimal'}).format(price);
+  return newPrice.replace(',', '.') + ' kr.';
 }
 
 /**
@@ -276,7 +276,7 @@ function addProduct() {
 function showProducts() {
   let output = '';
   for (let i = 0; i < products.length; i++){
-    output += `#${products[i].id} - ${products[i].description} - ${formatPrice(products[i].price)} \n`;
+    output += `#${products[i].id} - ${products[i].description} - ${formatPrice(products[i].price)}`;
   }
   return output;
 }
@@ -323,20 +323,16 @@ function addProductToCart() {
   console.error('Fjöldi er ekki löglegur, lágmark 1 og hámark 99.');
   return;
  }
+const product = products.find((i) => i.id === product.id);
 
- if(cart.lines.find((id)=> id)){
-  cart.lines[id - 1].quantity += quantity;
+let productInCart = cart.lines.find((i => i.product.id === id));
+
+ if(productInCart){
+  productInCart.quantity += quantity;
  }
  else{
-  const cartProduct = products[id-1];
-
-  /** @type {CartLine} */
-  const line = {
-    cartProduct,
-    quantity,
-
-  };
-  cart.lines.push(line);
+  const newLine = {product, quantity};
+  cart.lines.push(newLine);
  }
 
   /* Útfæra */
@@ -399,6 +395,6 @@ function checkout() {
   if(!address){
     console.error('heimilisfang má ekki vera tómt');
   }
-  console.log(`Pöntun móttekin ${name} \nVörur verða sendar á ${address} \n\n ${cartInfo(cart)}`);
+  console.log(`Pöntun móttekin ${name} \nVörur verða sendar á ${address} \n\n${cartInfo(cart)}`);
 }
 }
