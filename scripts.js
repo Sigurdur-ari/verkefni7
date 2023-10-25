@@ -276,9 +276,9 @@ function addProduct() {
 function showProducts() {
   let output = '';
   for (let i = 0; i < products.length; i++){
-    output += `#${products[i].id} - ${products[i].description} - ${formatPrice(products[i].price)}`;
+    output += `#${products[i].id} - ${products[i].title} - ${products[i].description} - ${formatPrice(products[i].price)}\n`;
   }
-  return output;
+  return console.log(output);
 }
 
 /**
@@ -308,10 +308,11 @@ function addProductToCart() {
     console.error('Auðkenni vöru er ekki löglegt, verður að vera heiltala stærri en 0.');
     return;
   }
- if(!products.find((id) => id)){
+  const product = products.find((i) => i.id === id);
+if (!product){
   console.error('Vara fannst ekki.');
   return;
- }
+}
 
  const quantityAsString = prompt('Hversu mikið?');
  if(!quantityAsString){
@@ -323,7 +324,6 @@ function addProductToCart() {
   console.error('Fjöldi er ekki löglegur, lágmark 1 og hámark 99.');
   return;
  }
-const product = products.find((i) => i.id === product.id);
 
 let productInCart = cart.lines.find((i => i.product.id === id));
 
@@ -334,12 +334,6 @@ let productInCart = cart.lines.find((i => i.product.id === id));
   const newLine = {product, quantity};
   cart.lines.push(newLine);
  }
-
-  /* Útfæra */
-
-  /* Hér ætti að nota `validateInteger` hjálparfall til að staðfesta gögn frá notanda */
-  
-  /* Til að athuga hvort vara sé til í `cart` þarf að nota `cart.lines.find` */
 }
 
 /**
