@@ -174,7 +174,7 @@ function cartInfo(cart) {
   let output = '';
   let total = 0;
   for (let i = 0; i < cart.lines.length; i++){
-      output += `${formatProduct(cart.lines[i].product, cart.lines[i].product.price)} \n`; 
+      output += `${formatProduct(cart.lines[i].product, cart.lines[i].quantity)} \n`; 
       if (cart.lines[i].quantity > 1){
         total += cart.lines[i].quantity * cart.lines[i].product.price;
       }
@@ -182,7 +182,7 @@ function cartInfo(cart) {
         total += cart.lines[i].product.price;
       }
   }
-  return `${output} Samtals: ${total}`;
+  return `${output} Samtals: ${formatPrice(total)}`;
 }
 
 // --------------------------------------------------------
